@@ -4,3 +4,4 @@
 Cargo.lock
 /tests/fixtures/**/target/
 /tests/fixtures/**/pkg/
+generated_readme.md

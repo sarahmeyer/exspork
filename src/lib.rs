@@ -25,3 +25,24 @@ pub fn read_cargo_toml(path: impl AsRef<Path>) -> Result<CargoToml, Box<Error>> 
     toml::from_str(&string_representation).map_err(|e| e.into())
 }
 
+pub fn generate_markdown() -> Result<(), Box<Error>> {
+    let config = read_cargo_toml("Cargo.toml")?;
+
+    let mut markdown = String::new();
+
+    markdown.push_str(&format!("# {}\n", config.package.name));
+    markdown.push_str(&format!("### Version: {}\n", config.package.version));
+
+    if let Some(description) = config.package.description {
+        markdown.push_str(&description);
+        markdown.push('\n');
+    }
+
+    if let Some(license) = config.package.license {
+        markdown.push_str(&format!("## License\n{}\n", license));
+    }
+
+    fs::write("generated_readme.md", &markdown)?;
+
+    Ok(())
+}
