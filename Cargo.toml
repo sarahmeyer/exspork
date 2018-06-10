@@ -1,0 +1,46 @@
+[package]
+name = "exspork"
+version = "0.1.0"
+authors = ["Sarah Meyer <sarahsaltrick@gmail.com>"]
+readme = "README.md"
+license = "MIT/Apache-2.0"
+
+[dependencies]
+serde = "1.0"
+serde_derive = "1.0"
+toml = "0.4"
+
+
+# description = "A Rust flavored replacement for the classic cowsay"
+# documentation = "https://docs.rs/ferris-says"
+# homepage = "https://github.com/mgattozzi/ferris-says"
+# repository = "https://github.com/mgattozzi/ferris-says"
+# readme = "README.md"
+# keywords = ["ferris", "cowsay", "print", "fsays", "rustacean"]
+# categories = [
+#   "text-processing",
+#   "visualization",
+#   "rendering",
+#   "command-line-utilities",
+#   "value-formatting"
+# ]
+# license = "MIT/Apache-2.0"
+#
+# [badges]
+# travis-ci = { repository = "mgattozzi/ferris-says", branch = "master" }
+# appveyor = { repository = "mgattozzi/ferris-says", branch = "master", service = "github" }
+#
+# [[bin]]
+# name = "fsays"
+# path = "src/bin/main.rs"
+#
+# [lib]
+# name = "ferris_says"
+#
+# [features]
+# clippy = []
+#
+# [dependencies]
+# smallvec = "0.4"
+# clap = "2.25"
+# error-chain = "0.10"

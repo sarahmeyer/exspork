@@ -1,0 +1,13 @@
+[package]
+name = "wasm_project"
+description = "an example crate that generates wasm from rust"
+version = "0.1.0"
+authors = ["Sarah Saltrick Meyer <sarahsaltrick@gmail.com>"]
+license = "WTFPL"
+repository = "https://github.com/sarahmeyer/exspork"
+
+[lib]
+crate-type = ["cdylib"]
+
+[dependencies]
+wasm-bindgen = "0.2"

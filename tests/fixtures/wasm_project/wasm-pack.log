@@ -1,0 +1,85 @@
+Jun 10 15:17:12.670 ERRO Compilation of your program failed. stderr:
+
+    Updating registry `https://github.com/rust-lang/crates.io-index`
+ Downloading wasm-bindgen v0.2.11
+ Downloading wasm-bindgen-macro v0.2.11
+ Downloading wasm-bindgen-backend v0.2.11
+ Downloading wasm-bindgen-shared v0.2.11
+   Compiling unicode-xid v0.1.0
+   Compiling serde v1.0.66
+   Compiling wasm-bindgen-shared v0.2.11
+   Compiling dtoa v0.4.2
+   Compiling itoa v0.4.1
+   Compiling proc-macro2 v0.4.6
+error[E0433]: failed to resolve. Could not find `Group` in `proc_macro`
+   --> /Users/sarahmeyer/.cargo/registry/src/github.com-1ecc6299db9ec823/proc-macro2-0.4.6/src/unstable.rs:122:45
+    |
+122 |                 let mut group = proc_macro::Group::new(delim, tt.stream.inner.unwrap_nightly());
+    |                                             ^^^^^ Could not find `Group` in `proc_macro`
+
+error[E0433]: failed to resolve. Could not find `Punct` in `proc_macro`
+   --> /Users/sarahmeyer/.cargo/registry/src/github.com-1ecc6299db9ec823/proc-macro2-0.4.6/src/unstable.rs:131:42
+    |
+131 |                 let mut op = proc_macro::Punct::new(tt.as_char(), spacing);
+    |                                          ^^^^^ Could not find `Punct` in `proc_macro`
+
+error[E0433]: failed to resolve. Could not find `token_stream` in `proc_macro`
+   --> /Users/sarahmeyer/.cargo/registry/src/github.com-1ecc6299db9ec823/proc-macro2-0.4.6/src/unstable.rs:213:25
+    |
+213 |     Nightly(proc_macro::token_stream::IntoIter),
+    |                         ^^^^^^^^^^^^ Could not find `token_stream` in `proc_macro`
+
+error[E0433]: failed to resolve. Could not find `Ident` in `proc_macro`
+   --> /Users/sarahmeyer/.cargo/registry/src/github.com-1ecc6299db9ec823/proc-macro2-0.4.6/src/unstable.rs:468:60
+    |
+468 |             Span::Nightly(s) => Ident::Nightly(proc_macro::Ident::new(string, s)),
+    |                                                            ^^^^^ Could not find `Ident` in `proc_macro`
+
+error[E0433]: failed to resolve. Could not find `Ident` in `proc_macro`
+   --> /Users/sarahmeyer/.cargo/registry/src/github.com-1ecc6299db9ec823/proc-macro2-0.4.6/src/unstable.rs:475:60
+    |
+475 |             Span::Nightly(s) => Ident::Nightly(proc_macro::Ident::new_raw(string, s)),
+    |                                                            ^^^^^ Could not find `Ident` in `proc_macro`
+
+error[E0412]: cannot find type `Ident` in module `proc_macro`
+   --> /Users/sarahmeyer/.cargo/registry/src/github.com-1ecc6299db9ec823/proc-macro2-0.4.6/src/unstable.rs:461:25
+    |
+461 |     Nightly(proc_macro::Ident),
+    |                         ^^^^^ not found in `proc_macro`
+help: possible candidates are found in other modules, you can import them into scope
+    |
+3   | use Ident;
+    |
+3   | use imp::Ident;
+    |
+3   | use stable::Ident;
+    |
+
+error[E0412]: cannot find type `Ident` in module `proc_macro`
+   --> /Users/sarahmeyer/.cargo/registry/src/github.com-1ecc6299db9ec823/proc-macro2-0.4.6/src/unstable.rs:495:44
+    |
+495 |     fn unwrap_nightly(self) -> proc_macro::Ident {
+    |                                            ^^^^^ not found in `proc_macro`
+help: possible candidates are found in other modules, you can import them into scope
+    |
+3   | use Ident;
+    |
+3   | use imp::Ident;
+    |
+3   | use stable::Ident;
+    |
+
+error[E0554]: #![feature] may not be used on the stable release channel
+  --> /Users/sarahmeyer/.cargo/registry/src/github.com-1ecc6299db9ec823/proc-macro2-0.4.6/src/lib.rs:47:34
+   |
+47 | #![cfg_attr(feature = "nightly", feature(proc_macro))]
+   |                                  ^^^^^^^^^^^^^^^^^^^^
+
+error: aborting due to 8 previous errors
+
+Some errors occurred: E0412, E0433, E0554.
+For more information about an error, try `rustc --explain E0412`.
+error: Could not compile `proc-macro2`.
+warning: build failed, waiting for other jobs to finish...
+error: build failed
+
