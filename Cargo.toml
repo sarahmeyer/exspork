@@ -4,14 +4,15 @@ version = "0.1.0"
 authors = ["Sarah Meyer <sarahsaltrick@gmail.com>"]
 readme = "README.md"
 license = "MIT/Apache-2.0"
+description = "Generates documentation for your wasm project by parsing the export statements in your typescript"
 
 [dependencies]
+nom = "4.0"
 serde = "1.0"
 serde_derive = "1.0"
 toml = "0.4"
 
 
-# description = "A Rust flavored replacement for the classic cowsay"
 # documentation = "https://docs.rs/ferris-says"
 # homepage = "https://github.com/mgattozzi/ferris-says"
 # repository = "https://github.com/mgattozzi/ferris-says"

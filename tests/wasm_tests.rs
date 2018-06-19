@@ -9,5 +9,6 @@ fn test_cargo_read() {
     assert_eq!(config.package.name, "exspork".to_string());
     assert_eq!(config.package.version, "0.1.0".to_string());
     assert_eq!(config.package.license, Some("MIT/Apache-2.0".to_string()));
-    assert_eq!(config.package.description, None);
+    assert_eq!(config.package.description, Some("Generates documentation for your \
+        wasm project by parsing the export statements in your typescript".to_string()));
 }

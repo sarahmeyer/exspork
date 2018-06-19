@@ -1,11 +1,21 @@
 #[macro_use]
-extern crate serde_derive;
+extern crate nom;
 extern crate serde;
+#[macro_use]
+extern crate serde_derive;
 extern crate toml;
+
+pub mod parser;
 
 use std::path::Path;
 use std::fs;
 use std::error::Error;
+
+// todo
+// generate doc stub per "export function" statement in wasm_project.d.ts
+//  - do we have access to anything more descriptive than the typescript file?
+// export generated readme to wasm_project directory
+//
 
 #[derive(Deserialize)]
 pub struct CargoToml {
