@@ -49,7 +49,7 @@ named!(parse_return_type<&str, Option<String>>,
         return_type: ws!(take_until!(";")) >>
         (match return_type {
             "void" => None,
-            _ => None,
+            taipu => Some(taipu.to_string()),
         })
     )
 );
@@ -115,4 +115,24 @@ fn parse_void_function_with_multiple_args() {
         taipu: "number".to_string()
     }]);
     assert_eq!(parsed_function.return_type, None);
+}
+
+#[test]
+fn parse_returning_function_with_multiple_args() {
+    let void_function_declaration = "
+        export function exponent(x: number, y: number): number;
+
+    ";
+
+    let (_, parsed_function) = function_declaration(void_function_declaration).unwrap();
+
+    assert_eq!(&parsed_function.name, "exponent");
+    assert_eq!(parsed_function.args, vec![Argument{
+        name: "x".to_string(),
+        taipu: "number".to_string()
+    }, Argument{
+        name: "y".to_string(),
+        taipu: "number".to_string()
+    }]);
+    assert_eq!(parsed_function.return_type, Some("number".to_string()));
 }
