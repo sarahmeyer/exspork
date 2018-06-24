@@ -6,8 +6,14 @@ const TYPESCRIPT_FILE_PATH: &str = "./tests/fixtures/parsing.d.ts";
 #[derive(Debug)]
 pub struct Function {
     pub name: String,
-    pub args: Option<Vec<String>>,
+    pub args: Vec<Argument>,
     pub return_type: Option<String>,
+}
+
+#[derive(Debug, PartialEq, Eq)]
+pub struct Argument {
+    pub name: String,
+    pub taipu: String,
 }
 
 fn is_function(s: &str) -> bool {
@@ -21,11 +27,22 @@ pub fn read_typescript_files() -> Result<String, Box<Error>> {
     fs::read_to_string(TYPESCRIPT_FILE_PATH).map_err(|e| e.into())
 }
 
-named!(parse_args<&str, Option<Vec<String>>>,
+named!(parse_one_arg<&str, Argument>,
+    complete!(do_parse!(
+        name: ws!(take_until!(":")) >>
+        tag!(":") >>
+        // taipu: ws!(alt!(take_until_and_consume!(",") | take_until!(")"))) >>
+        taipu: ws!(take_until!(")")) >>
+        (Argument { name: name.to_string(), taipu: taipu.to_string() })
+    ))
+);
+
+named!(parse_args<&str, Vec<Argument>>,
     do_parse!(
         tag!("(") >>
+        args: many0!(parse_one_arg) >>
         tag!(")") >>
-        (None)
+        (args)
     )
 );
 
@@ -61,6 +78,23 @@ fn parse_void_function() {
     let (_, parsed_function) = function_declaration(void_function_declaration).unwrap();
 
     assert_eq!(&parsed_function.name, "greet");
-    assert_eq!(parsed_function.args, None);
+    assert_eq!(parsed_function.args, Vec::new());
+    assert_eq!(parsed_function.return_type, None);
+}
+
+#[test]
+fn parse_void_function_with_arg() {
+    let void_function_declaration = "
+        export function greet(person: string): void;
+
+    ";
+
+    let (_, parsed_function) = function_declaration(void_function_declaration).unwrap();
+
+    assert_eq!(&parsed_function.name, "greet");
+    assert_eq!(parsed_function.args, vec![Argument{
+        name: "person".to_string(),
+        taipu: "string".to_string()
+    }]);
     assert_eq!(parsed_function.return_type, None);
 }
