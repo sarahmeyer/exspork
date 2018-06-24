@@ -7,19 +7,47 @@ const TYPESCRIPT_FILE_PATH: &str = "./tests/fixtures/parsing.d.ts";
 pub struct Function {
     pub name: String,
     pub args: Vec<Argument>,
-    pub return_type: Option<String>,
+    pub return_type: Type,
 }
 
 #[derive(Debug, PartialEq, Eq)]
 pub struct Argument {
     pub name: String,
-    pub taipu: String,
+    pub taipu: Type,
 }
 
-fn is_function(s: &str) -> bool {
+#[derive(Debug, PartialEq, Eq)]
+pub enum Type {
+    Boolean,
+    Number,
+    String,
+    Array,
+    Tuple,
+    Enum,
+    Any,
+    Void,
+    Null,
+    Undefined,
+    Never,
+    Object,
+    Custom(String),
+}
+
+fn to_type(s: &str) -> Type {
     match s {
-        "function" => true,
-        _ => false,
+        "boolean" => Type::Boolean,
+        "number" => Type::Number,
+        "string" => Type::String,
+        "array" => Type::Array,
+        "tuple" => Type::Tuple,
+        "enum" => Type::Enum,
+        "any" => Type::Any,
+        "void" => Type::Void,
+        "null" => Type::Null,
+        "undefined" => Type::Undefined,
+        "never" => Type::Never,
+        "object" => Type::Object,
+        custom => Type::Custom(custom.to_string()),
     }
 }
 
@@ -31,7 +59,7 @@ named!(parse_one_arg<&str, Argument>,
     complete!(do_parse!(
         name: ws!(take_until_and_consume!(":")) >>
         taipu: ws!(alt_complete!(take_until_and_consume!(",") | take_until!(")"))) >>
-        (Argument { name: name.to_string(), taipu: taipu.to_string() })
+        (Argument { name: name.to_string(), taipu: to_type(taipu) })
     ))
 );
 
@@ -44,13 +72,10 @@ named!(parse_args<&str, Vec<Argument>>,
     )
 );
 
-named!(parse_return_type<&str, Option<String>>,
+named!(parse_return_type<&str, Type>,
     do_parse!(
         return_type: ws!(take_until!(";")) >>
-        (match return_type {
-            "void" => None,
-            taipu => Some(taipu.to_string()),
-        })
+        (to_type(return_type))
     )
 );
 
@@ -77,7 +102,7 @@ fn parse_void_function() {
 
     assert_eq!(&parsed_function.name, "greet");
     assert_eq!(parsed_function.args, Vec::new());
-    assert_eq!(parsed_function.return_type, None);
+    assert_eq!(parsed_function.return_type, Type::Void);
 }
 
 #[test]
@@ -92,9 +117,9 @@ fn parse_void_function_with_arg() {
     assert_eq!(&parsed_function.name, "greet");
     assert_eq!(parsed_function.args, vec![Argument{
         name: "person".to_string(),
-        taipu: "string".to_string()
+        taipu: Type::String,
     }]);
-    assert_eq!(parsed_function.return_type, None);
+    assert_eq!(parsed_function.return_type, Type::Void);
 }
 
 #[test]
@@ -109,12 +134,12 @@ fn parse_void_function_with_multiple_args() {
     assert_eq!(&parsed_function.name, "greet");
     assert_eq!(parsed_function.args, vec![Argument{
         name: "person".to_string(),
-        taipu: "string".to_string()
+        taipu: Type::String,
     }, Argument{
         name: "age".to_string(),
-        taipu: "number".to_string()
+        taipu: Type::Number,
     }]);
-    assert_eq!(parsed_function.return_type, None);
+    assert_eq!(parsed_function.return_type, Type::Void);
 }
 
 #[test]
@@ -129,10 +154,10 @@ fn parse_returning_function_with_multiple_args() {
     assert_eq!(&parsed_function.name, "exponent");
     assert_eq!(parsed_function.args, vec![Argument{
         name: "x".to_string(),
-        taipu: "number".to_string()
+        taipu: Type::Number,
     }, Argument{
         name: "y".to_string(),
-        taipu: "number".to_string()
+        taipu: Type::Number,
     }]);
-    assert_eq!(parsed_function.return_type, Some("number".to_string()));
+    assert_eq!(parsed_function.return_type, Type::Number);
 }
