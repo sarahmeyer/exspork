@@ -29,8 +29,7 @@ pub fn read_typescript_files() -> Result<String, Box<Error>> {
 
 named!(parse_one_arg<&str, Argument>,
     complete!(do_parse!(
-        name: ws!(take_until!(":")) >>
-        tag!(":") >>
+        name: ws!(take_until_and_consume!(":")) >>
         taipu: ws!(alt_complete!(take_until_and_consume!(",") | take_until!(")"))) >>
         (Argument { name: name.to_string(), taipu: taipu.to_string() })
     ))
