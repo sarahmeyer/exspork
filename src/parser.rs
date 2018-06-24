@@ -31,8 +31,7 @@ named!(parse_one_arg<&str, Argument>,
     complete!(do_parse!(
         name: ws!(take_until!(":")) >>
         tag!(":") >>
-        // taipu: ws!(alt!(take_until_and_consume!(",") | take_until!(")"))) >>
-        taipu: ws!(take_until!(")")) >>
+        taipu: ws!(alt_complete!(take_until_and_consume!(",") | take_until!(")"))) >>
         (Argument { name: name.to_string(), taipu: taipu.to_string() })
     ))
 );
@@ -95,6 +94,26 @@ fn parse_void_function_with_arg() {
     assert_eq!(parsed_function.args, vec![Argument{
         name: "person".to_string(),
         taipu: "string".to_string()
+    }]);
+    assert_eq!(parsed_function.return_type, None);
+}
+
+#[test]
+fn parse_void_function_with_multiple_args() {
+    let void_function_declaration = "
+        export function greet(person: string, age: number): void;
+
+    ";
+
+    let (_, parsed_function) = function_declaration(void_function_declaration).unwrap();
+
+    assert_eq!(&parsed_function.name, "greet");
+    assert_eq!(parsed_function.args, vec![Argument{
+        name: "person".to_string(),
+        taipu: "string".to_string()
+    }, Argument{
+        name: "age".to_string(),
+        taipu: "number".to_string()
     }]);
     assert_eq!(parsed_function.return_type, None);
 }
